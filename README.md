@@ -1,4 +1,4 @@
-# kodprov_API
+# Alerts API
 
 Small MVP of an alerts API
 
@@ -16,12 +16,12 @@ Classic mvc pattern with controller -> service -> repository. Keeping the domain
 
 # TODO
 
-Tests, unit & e2e
-Atomic db handling
-Model change tracking (who published, cancelled etc)
-Logging
-Metrics
-Authentication, Authorization, Rate limiting
-DB unique constraint (area, status == "published")
-Validate request models
-Caching
+- Tests, unit & e2e
+- Atomic db handling
+- Model change tracking (who published, cancelled etc)
+- Logging
+- Metrics
+- Authentication, Authorization, Rate limiting
+- DB unique constraint (area, status == "published")
+- Validate request models
+- Caching

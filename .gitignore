@@ -1,26 +1,26 @@
 # Build output
-  bin/
-  obj/
+bin/
+obj/
 
-  # User-specific files
-  *.user
-  *.suo
-  .vs/
+# User-specific files
+*.user
+*.suo
+.vs/
 
-  # Rider
-  .idea/
+# Rider
+.idea/
 
-  # VS Code
-  .vscode/
+# VS Code
+.vscode/
 
-  # NuGet
-  *.nupkg
-  packages/
+# NuGet
+*.nupkg
+packages/
 
-  # Environment
-  .env
-  appsettings.*.local.json
+# Environment
+.env
+appsettings.*.local.json
 
-  # OS
-  .DS_Store
-  Thumbs.db
+# OS
+.DS_Store
+Thumbs.db

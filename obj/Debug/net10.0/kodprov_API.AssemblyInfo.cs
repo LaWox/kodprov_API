@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("kodprov_API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7e6d66e54bc058e68c7a43fef402e7e88bbf773")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88dbc9c08f375a8b2de45161a867ca9df3e2c734")]
 [assembly: System.Reflection.AssemblyProductAttribute("kodprov_API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("kodprov_API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

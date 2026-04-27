@@ -4,6 +4,7 @@ namespace API.Repositories
 {
     public interface IAlertRepository
     {
+        Task<IEnumerable<Alert>> GetAllAlertsAsync();
         Task<Alert> CreateAlertAsync(Alert alert);
         Task<Alert?> GetByAreaAsync(string area);
         Task<Alert?> GetAlertByIdAsync(Guid id);

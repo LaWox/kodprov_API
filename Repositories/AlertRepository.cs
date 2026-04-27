@@ -1,10 +1,16 @@
 using API.Models.Alerts;
+using API.Models.Enums;
 
 namespace API.Repositories
 {
     public class AlertRepository : IAlertRepository
     {
         private static readonly List<Alert> _alerts = [];
+
+        public Task<IEnumerable<Alert>> GetAllAlertsAsync()
+        {
+            return Task.FromResult<IEnumerable<Alert>>(_alerts);
+        }
 
         public Task<Alert> CreateAlertAsync(Alert alert)
         {
@@ -27,6 +33,7 @@ namespace API.Repositories
             var alert =
                 _alerts.FirstOrDefault(a => a.Id == id)
                 ?? throw new KeyNotFoundException($"Alert with id {id} was not found.");
+            alert.Status = AlertStatus.Published;
             alert.UpdatedAt = DateTime.UtcNow;
             return Task.CompletedTask;
         }
@@ -36,6 +43,7 @@ namespace API.Repositories
             var alert =
                 _alerts.FirstOrDefault(a => a.Id == id)
                 ?? throw new KeyNotFoundException($"Alert with id {id} was not found.");
+            alert.Status = AlertStatus.Canceled;
             alert.UpdatedAt = DateTime.UtcNow;
             return Task.CompletedTask;
         }

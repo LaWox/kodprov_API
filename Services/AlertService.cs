@@ -9,6 +9,11 @@ namespace API.Services
     {
         private readonly IAlertRepository _repository = repository;
 
+        public async Task<IEnumerable<Alert>> GetAllAlertsAsync()
+        {
+            return await _repository.GetAllAlertsAsync();
+        }
+
         public async Task<Alert> CreateAlertAsync(CreateAlertRequest alertRequest)
         {
             var existingAlert = await _repository.GetByAreaAsync(alertRequest.Area);

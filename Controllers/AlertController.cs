@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("alerts")]
+    [Route("api/alerts")]
     public class AlertController : ControllerBase
     {
         private readonly IAlertService _alertService;
@@ -14,6 +14,13 @@ namespace API.Controllers
         public AlertController(IAlertService alertService)
         {
             _alertService = alertService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Alert>>> GetAllAlertsAsync()
+        {
+            var alerts = await _alertService.GetAllAlertsAsync();
+            return Ok(alerts);
         }
 
         [HttpPost]

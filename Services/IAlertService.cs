@@ -5,6 +5,7 @@ namespace API.Services
 {
     public interface IAlertService
     {
+        Task<IEnumerable<Alert>> GetAllAlertsAsync();
         Task<Alert> CreateAlertAsync(CreateAlertRequest alertRequest);
         Task<Alert?> GetAlertByIdAsync(Guid id);
         Task PublishAlertAsync(Guid id);

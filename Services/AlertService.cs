@@ -1,3 +1,4 @@
+using API.Common;
 using API.DTO.Alerts;
 using API.Models.Alerts;
 using API.Models.Enums;
@@ -14,16 +15,27 @@ namespace API.Services
             return await _repository.GetAllAlertsAsync();
         }
 
-        public async Task<Alert> CreateAlertAsync(CreateAlertRequest alertRequest)
+        public async Task<Result<Alert>> GetAlertByIdAsync(Guid id)
         {
-            var existingAlert = await _repository.GetByAreaAsync(alertRequest.Area);
+            var alert = await _repository.GetAlertByIdAsync(id);
+            if (alert is null)
+                return Result<Alert>.Fail(ErrorType.NotFound, $"Alert with id {id} was not found.");
 
-            if (existingAlert != null)
-            {
-                throw new InvalidOperationException(
+            return Result<Alert>.Ok(alert);
+        }
+
+        public async Task<Result<Alert>> CreateAlertAsync(CreateAlertRequest alertRequest)
+        {
+            var conflictingAlerts = await _repository.GetByAreaAsync(
+                alertRequest.Area,
+                publishedOnly: true
+            );
+
+            if (conflictingAlerts.Any())
+                return Result<Alert>.Fail(
+                    ErrorType.Conflict,
                     $"An alert for area '{alertRequest.Area}' already exists."
                 );
-            }
 
             var alert = new Alert
             {
@@ -33,44 +45,40 @@ namespace API.Services
                 Status = AlertStatus.Draft,
             };
 
-            return await _repository.CreateAlertAsync(alert);
+            return Result<Alert>.Ok(await _repository.CreateAlertAsync(alert));
         }
 
-        public async Task<Alert?> GetAlertByIdAsync(Guid id)
+        public async Task<Result> PublishAlertAsync(Guid id)
         {
-            return await _repository.GetAlertByIdAsync(id);
-        }
+            var alert = await _repository.GetAlertByIdAsync(id);
 
-        public async Task PublishAlertAsync(Guid id)
-        {
-            var alert =
-                await _repository.GetAlertByIdAsync(id)
-                ?? throw new KeyNotFoundException($"Alert with id {id} was not found.");
+            if (alert is null)
+                return Result.Fail(ErrorType.NotFound, $"Alert with id {id} was not found.");
 
             if (alert.Status != AlertStatus.Draft)
-            {
-                throw new InvalidOperationException(
+                return Result.Fail(
+                    ErrorType.Validation,
                     $"Only alerts in Draft status can be published. Current status: {alert.Status}"
                 );
-            }
 
-            await _repository.PublishAlertAsync(id);
+            await _repository.PublishAlertAsync(alert);
+            return Result.Ok();
         }
 
-        public async Task CancelAlertAsync(Guid id)
+        public async Task<Result> CancelAlertAsync(Guid id)
         {
-            var alert =
-                await _repository.GetAlertByIdAsync(id)
-                ?? throw new KeyNotFoundException($"Alert with id {id} was not found.");
+            var alert = await _repository.GetAlertByIdAsync(id);
+            if (alert is null)
+                return Result.Fail(ErrorType.NotFound, $"Alert with id {id} was not found.");
 
             if (alert.Status != AlertStatus.Published)
-            {
-                throw new InvalidOperationException(
+                return Result.Fail(
+                    ErrorType.Validation,
                     $"Only alerts in Published status can be canceled. Current status: {alert.Status}"
                 );
-            }
 
-            await _repository.CancelAlertAsync(id);
+            await _repository.CancelAlertAsync(alert);
+            return Result.Ok();
         }
     }
 }

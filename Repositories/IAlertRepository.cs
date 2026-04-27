@@ -6,9 +6,9 @@ namespace API.Repositories
     {
         Task<IEnumerable<Alert>> GetAllAlertsAsync();
         Task<Alert> CreateAlertAsync(Alert alert);
-        Task<Alert?> GetByAreaAsync(string area);
+        Task<IEnumerable<Alert>> GetByAreaAsync(string area, bool publishedOnly = true);
         Task<Alert?> GetAlertByIdAsync(Guid id);
-        Task PublishAlertAsync(Guid id);
-        Task CancelAlertAsync(Guid id);
+        Task PublishAlertAsync(Alert alert);
+        Task CancelAlertAsync(Alert alert);
     }
 }

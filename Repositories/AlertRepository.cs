@@ -28,29 +28,26 @@ namespace API.Repositories
             return Task.FromResult(alert);
         }
 
-        public Task PublishAlertAsync(Guid id)
+        public Task PublishAlertAsync(Alert alert)
         {
-            var alert =
-                _alerts.FirstOrDefault(a => a.Id == id)
-                ?? throw new KeyNotFoundException($"Alert with id {id} was not found.");
             alert.Status = AlertStatus.Published;
             alert.UpdatedAt = DateTime.UtcNow;
             return Task.CompletedTask;
         }
 
-        public Task CancelAlertAsync(Guid id)
+        public Task CancelAlertAsync(Alert alert)
         {
-            var alert =
-                _alerts.FirstOrDefault(a => a.Id == id)
-                ?? throw new KeyNotFoundException($"Alert with id {id} was not found.");
             alert.Status = AlertStatus.Canceled;
             alert.UpdatedAt = DateTime.UtcNow;
             return Task.CompletedTask;
         }
 
-        public Task<Alert?> GetByAreaAsync(string area)
+        public Task<IEnumerable<Alert>> GetByAreaAsync(string area, bool publishedOnly = false)
         {
-            return Task.FromResult(_alerts.FirstOrDefault(a => a.Area == area));
+            var alerts = _alerts.Where(a =>
+                a.Area == area && (!publishedOnly || a.Status == AlertStatus.Published)
+            );
+            return Task.FromResult(alerts);
         }
     }
 }

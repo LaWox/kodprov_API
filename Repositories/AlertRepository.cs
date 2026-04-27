@@ -39,5 +39,10 @@ namespace API.Repositories
             alert.UpdatedAt = DateTime.UtcNow;
             return Task.CompletedTask;
         }
+
+        public Task<Alert?> GetByAreaAsync(string area)
+        {
+            return Task.FromResult(_alerts.FirstOrDefault(a => a.Area == area));
+        }
     }
 }
